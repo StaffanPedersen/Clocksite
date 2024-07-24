@@ -1,6 +1,4 @@
 <script setup lang="ts">
-// import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
 import TheWelcome from '@/components/TheWelcome.vue'
 import MainClock from '@/components/MainClock.vue'
 </script>
@@ -8,7 +6,6 @@ import MainClock from '@/components/MainClock.vue'
 <template>
   <header>
     <div class="wrapper">
-      <!--      <HelloWorld msg="You did it!" />-->
       <h1>Custom clocksite</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>
