@@ -7,7 +7,6 @@ import MainClock from '@/components/MainClock.vue'
 
 <template>
   <header>
-
     <div class="wrapper">
       <!--      <HelloWorld msg="You did it!" />-->
       <h1>Custom clocksite</h1>
@@ -20,12 +19,10 @@ import MainClock from '@/components/MainClock.vue'
     </div>
   </header>
 
-
   <main>
     <MainClock />
     <RouterView />
   </main>
-
 
   <footer>
     <p>Contact info</p>
@@ -33,7 +30,6 @@ import MainClock from '@/components/MainClock.vue'
     <p>Maps</p>
     <p>&copy; 2024</p>
   </footer>
-
 </template>
 
 <style scoped>

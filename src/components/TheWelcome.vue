@@ -13,7 +13,6 @@ import WelcomeItem from './WelcomeItem.vue'
       <DocumentationIcon />
     </template>
     <template #heading>Craftmanship</template>
-
   </WelcomeItem>
 
   <WelcomeItem>
@@ -21,7 +20,6 @@ import WelcomeItem from './WelcomeItem.vue'
       <ToolingIcon />
     </template>
     <template #heading>Tooling</template>
-
   </WelcomeItem>
 
   <WelcomeItem>
@@ -29,7 +27,6 @@ import WelcomeItem from './WelcomeItem.vue'
       <EcosystemIcon />
     </template>
     <template #heading>Details</template>
-
   </WelcomeItem>
 
   <WelcomeItem>
@@ -37,7 +34,6 @@ import WelcomeItem from './WelcomeItem.vue'
       <CommunityIcon />
     </template>
     <template #heading>Workshop</template>
-
   </WelcomeItem>
 
   <WelcomeItem>
@@ -45,6 +41,5 @@ import WelcomeItem from './WelcomeItem.vue'
       <SupportIcon />
     </template>
     <template #heading>My work</template>
-
   </WelcomeItem>
 </template>

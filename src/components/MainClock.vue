@@ -29,9 +29,9 @@ export default {
       const minutes = now.getMinutes()
       const hours = now.getHours()
 
-      const secondsDeg = ((seconds / 60) * 360);
-      const minutesDeg = ((minutes / 60) * 360) + ((seconds / 60) * 6);
-      const hoursDeg = ((hours % 12) / 12 * 360) + ((minutes / 60) * 30);
+      const secondsDeg = (seconds / 60) * 360
+      const minutesDeg = (minutes / 60) * 360 + (seconds / 60) * 6
+      const hoursDeg = ((hours % 12) / 12) * 360 + (minutes / 60) * 30
 
       this.setHandRotation('second', secondsDeg)
       this.setHandRotation('minute', minutesDeg)
