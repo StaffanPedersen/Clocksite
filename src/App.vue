@@ -1,26 +1,43 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
+// import { RouterLink, RouterView } from 'vue-router'
+// import HelloWorld from './components/HelloWorld.vue'
+import TheWelcome from '@/components/TheWelcome.vue'
+import MainClock from '@/components/MainClock.vue'
 </script>
 
 <template>
   <header>
-    <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did it!" />
-
+      <!--      <HelloWorld msg="You did it!" />-->
+      <h1>Custom clocksite</h1>
       <nav>
         <RouterLink to="/">Home</RouterLink>
         <RouterLink to="/about">About</RouterLink>
+        <RouterLink to="/blog">Blog</RouterLink>
+        <RouterLink to="/admin">Admin</RouterLink>
       </nav>
     </div>
   </header>
 
-  <RouterView />
+
+  <main>
+    <MainClock />
+    <RouterView />
+  </main>
+
+
+  <footer>
+    <p>Contact info</p>
+    <p>Adress</p>
+    <p>Maps</p>
+    <p>&copy; 2024</p>
+  </footer>
+
 </template>
 
 <style scoped>
+/*
 header {
   line-height: 1.5;
   max-height: 100vh;
@@ -82,4 +99,5 @@ nav a:first-of-type {
     margin-top: 1rem;
   }
 }
+*/
 </style>
