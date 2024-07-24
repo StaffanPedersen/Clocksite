@@ -1,17 +1,15 @@
 {
-  "compilerOptions": {
-    // Base directory to resolve non-relative module names
-    "baseUrl": ".",
-    // Path aliases
-    "paths": {
-      "@/*": ["src/*"]
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
     },
-    // Additional options here...
-  },
-  // Include .vue files for TypeScript understanding
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.vue",
-    "src/**/*.d.ts"
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.vitest.json"
+    }
   ]
 }
+
