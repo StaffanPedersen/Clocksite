@@ -23,7 +23,7 @@ import MainClock from '@/components/MainClock.vue'
 
   <footer>
     <p>Contact info</p>
-    <p>Adress</p>
+    <p>Address</p>
     <p>Maps</p>
     <p>&copy; 2024</p>
   </footer>
