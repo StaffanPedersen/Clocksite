@@ -1,26 +1,43 @@
 <template>
-  <div class="blog">
-    <h1>Blog Page</h1>
-    <div class="blog-list">
-      <BlogItemCard
-        v-for="(blog, index) in blogs"
-        :key="index"
-        :title="blog.title"
-        :image="blog.image"
-      />
-    </div>
+  <div class="blog-list">
+    <BlogItemCard
+      v-for="item in blogItems"
+      :key="item.id"
+      :title="item.title"
+      :image="item.image"
+      @open-detail="showDetail"
+    />
+    <BlogItemDetail
+      v-if="selectedItem"
+      :title="selectedItem.title"
+      :image="selectedItem.image"
+      :text="selectedItem.text"
+      @close="selectedItem = null"
+    />
   </div>
 </template>
 
 <script setup>
-import BlogItemCard from '@/components/BlogitemCard.vue'
-const blogs = [
-  { title: 'Blog Post 1', image: 'path/to/image1.jpg' },
-  { title: 'Blog Post 2', image: 'path/to/image2.jpg' },
-  { title: 'Blog Post 2', image: 'path/to/image2.jpg' },
-  { title: 'Blog Post 2', image: 'path/to/image2.jpg' },
-  { title: 'Blog Post 2', image: 'path/to/image2.jpg' }
-]
+import { ref, onMounted } from 'vue'
+import axios from 'axios'
+import BlogItemCard from '@/components/BlogItemCard.vue'
+import BlogItemDetail from '@/components/BlogItemDetail.vue'
+
+const blogItems = ref([])
+const selectedItem = ref(null)
+
+onMounted(async () => {
+  try {
+    const response = await axios.get('https://localhost:7188/api/Blog')
+    blogItems.value = response.data
+  } catch (error) {
+    console.error('Error fetching blog data:', error)
+  }
+})
+
+const showDetail = (item) => {
+  selectedItem.value = item
+}
 </script>
 
 <style>
