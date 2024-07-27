@@ -19,18 +19,32 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const username = ref('')
 const password = ref('')
 const error = ref('')
 const router = useRouter()
 
-const login = () => {
-  if (username.value === 'admin' && password.value === 'password') {
-    localStorage.setItem('auth', 'true')
-    router.push('/admin/dashboard')
-  } else {
-    error.value = 'Invalid credentials'
+const login = async () => {
+  if (!username.value || !password.value) {
+    error.value = 'Username and password are required'
+    return
+  }
+
+  try {
+    const response = await axios.post('https://localhost:7188/api/Auth/login', {
+      username: username.value,
+      password: password.value
+    })
+    if (response.data.token) {
+      localStorage.setItem('token', response.data.token)
+      await router.push('/admin/dashboard')
+    } else {
+      error.value = 'No token received'
+    }
+  } catch (err) {
+    error.value = 'Invalid credentials or server error'
   }
 }
 </script>

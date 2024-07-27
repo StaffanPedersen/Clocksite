@@ -1,7 +1,9 @@
+// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import AdminLogin from '@/components/AdminLogin.vue'
 import AdminDashboard from '@/components/AdminDashboard.vue'
+import axios from 'axios'
 
 const routes = [
   {
@@ -38,11 +40,25 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (to.meta.requiresAuth && !localStorage.getItem('auth')) {
-    next('/admin/login')
+  const token = localStorage.getItem('token')
+  if (to.meta.requiresAuth && !token) {
+    next('/admin')
   } else {
     next()
   }
 })
+
+axios.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token')
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`
+    }
+    return config
+  },
+  (error) => {
+    return Promise.reject(error)
+  }
+)
 
 export default router
