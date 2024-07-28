@@ -12,7 +12,13 @@
       </div>
       <div>
         <label for="image">Image:</label>
-        <input type="file" @change="onFileChange" />
+        <input type="file" @change="onFileChange" ref="fileInput" />
+        <img
+          v-if="currentImage"
+          :src="getImageUrl(currentImage)"
+          alt="Current Blog Image"
+          class="current-image"
+        />
       </div>
       <button type="submit">Submit</button>
     </form>
@@ -28,7 +34,9 @@ import BlogService from '@/services/BlogService'
 const title = ref('')
 const text = ref('')
 const image = ref(null)
+const currentImage = ref(null)
 const error = ref('')
+const fileInput = ref(null)
 const router = useRouter()
 const route = useRoute()
 
@@ -38,6 +46,17 @@ const fetchBlog = async () => {
     if (blog) {
       title.value = blog.title
       text.value = blog.text
+      currentImage.value = blog.image
+      if (currentImage.value) {
+        const file = new File([], currentImage.value)
+        Object.defineProperty(file, 'name', {
+          writable: true,
+          value: currentImage.value
+        })
+        const dataTransfer = new DataTransfer()
+        dataTransfer.items.add(file)
+        fileInput.value.files = dataTransfer.files
+      }
     } else {
       error.value = 'Failed to fetch blog'
     }
@@ -54,11 +73,16 @@ const submitBlog = async () => {
   const blogToUpdate = {
     id: route.params.id,
     title: title.value,
-    text: text.value
+    text: text.value,
+    image: currentImage.value // Ensure the current image name is included
   }
 
   try {
-    const success = await BlogService.putBlog(blogToUpdate, image.value)
+    if (image.value) {
+      await BlogService.uploadImage(image.value)
+      blogToUpdate.image = image.value.name
+    }
+    const success = await BlogService.putBlog(blogToUpdate)
     if (success) {
       router.push('/admin/dashboard')
     } else {
@@ -67,6 +91,10 @@ const submitBlog = async () => {
   } catch (err) {
     error.value = 'Failed to update blog'
   }
+}
+
+const getImageUrl = (imageName) => {
+  return `https://localhost:7188/images/blog/${imageName}`
 }
 
 onMounted(() => {
@@ -87,5 +115,11 @@ onMounted(() => {
 
 .edit-blog button {
   padding: 0.5rem 1rem;
+}
+
+.current-image {
+  width: 100px;
+  height: auto;
+  margin-top: 1rem;
 }
 </style>

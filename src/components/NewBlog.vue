@@ -42,9 +42,13 @@ const submitBlog = async () => {
   }
 
   try {
-    const result = await BlogService.postBlog(newBlog, image.value)
+    if (image.value) {
+      await BlogService.uploadImage(image.value)
+      newBlog.image = image.value.name
+    }
+    const result = await BlogService.postBlog(newBlog)
     if (result) {
-      await router.push('/admin/dashboard')
+      router.push('/admin/dashboard')
     } else {
       error.value = 'Failed to create blog'
     }

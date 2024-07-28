@@ -3,7 +3,15 @@
     <h1>Admin Dashboard</h1>
     <button @click="createNewBlog">Create New Blog</button>
     <div v-for="blog in blogs" :key="blog.id" class="blog-item">
-      <h2>{{ blog.title }}</h2>
+      <h2>
+        {{ blog.title }}
+        <img
+          v-if="blog.image"
+          :src="getImageUrl(blog.image)"
+          alt="Blog Image"
+          class="blog-thumbnail"
+        />
+      </h2>
       <button @click="editBlog(blog.id)">Edit</button>
       <button @click="deleteBlog(blog.id)">Delete</button>
     </div>
@@ -52,6 +60,10 @@ const deleteBlog = async (id) => {
   }
 }
 
+const getImageUrl = (imageName) => {
+  return `https://localhost:7188/images/blog/${imageName}`
+}
+
 onMounted(() => {
   fetchBlogs()
 })
@@ -68,6 +80,15 @@ onMounted(() => {
   border: 1px solid #ccc;
   padding: 1rem;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.blog-thumbnail {
+  width: 50px;
+  height: auto;
+  margin-left: 1rem;
 }
 
 .admin-dashboard button {

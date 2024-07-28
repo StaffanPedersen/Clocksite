@@ -1,10 +1,10 @@
-<!-- src/components/BlogItemDetail.vue -->
 <template>
   <div class="blog-item-detail">
     <button class="close-button" @click="close">X</button>
     <img :src="image" alt="Blog Image" class="blog-image" />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
+    <!-- Ensure this line is correctly binding the text prop -->
   </div>
 </template>
 
@@ -12,7 +12,7 @@
 const props = defineProps({
   image: String,
   title: String,
-  text: String
+  text: String // Ensure the text prop is defined here
 })
 
 const emit = defineEmits(['close'])

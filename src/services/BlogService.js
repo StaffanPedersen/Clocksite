@@ -2,13 +2,12 @@ import axios from 'axios'
 
 const BlogService = (() => {
   const blogController = 'https://localhost:7188/api/Blog'
-  const imageUploadController = 'http://localhost:7188/api/imageupload'
+  const imageUploadController = 'https://localhost:7188/api/imageupload'
   const localImageUrl = '/images/blog'
 
   const getAll = async () => {
     try {
       const result = await axios.get(blogController)
-      console.log(result.data)
       return result.data
     } catch (err) {
       console.log('Unable to contact blogController')
@@ -40,34 +39,32 @@ const BlogService = (() => {
       const result = await axios.put(`${blogController}/${blogToUpdate.id}`, blogToUpdate)
       return true
     } catch (err) {
-      console.error('Error updating driver:', err)
+      console.error('Error updating blog:', err)
       return false
     }
   }
 
-  const postBlog = async (newBlog, image) => {
-    let formData
-
+  const postBlog = async (newBlog) => {
     try {
       const result = await axios.post(blogController, newBlog)
-      formData = new FormData()
-      formData.append('formfile', image)
-
-      await axios({
-        url: imageUploadController,
-        method: 'POST',
-        data: formData,
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-
       return result.data
     } catch (err) {
       console.error('Error posting blog:', err)
       return null
-    } finally {
-      if (formData) {
-        clearFormData(formData)
-      }
+    }
+  }
+
+  const uploadImage = async (image) => {
+    const formData = new FormData()
+    formData.append('formFile', image)
+
+    try {
+      await axios.post(imageUploadController, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+    } catch (err) {
+      console.error('Error uploading image:', err)
+      throw err
     }
   }
 
@@ -85,12 +82,6 @@ const BlogService = (() => {
     return `${localImageUrl}/${imageName}`
   }
 
-  const clearFormData = (formData) => {
-    for (var pair of formData.entries()) {
-      formData.delete(pair[0])
-    }
-  }
-
   return {
     getAll,
     postBlog,
@@ -98,6 +89,7 @@ const BlogService = (() => {
     getById,
     getByName,
     deleteBlog,
+    uploadImage,
     getImageUrl
   }
 })()
