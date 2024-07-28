@@ -17,7 +17,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import axios from 'axios'
 
@@ -47,6 +47,14 @@ const login = async () => {
     error.value = 'Invalid credentials or server error'
   }
 }
+
+// Redirect to dashboard if token exists
+onMounted(() => {
+  const token = localStorage.getItem('token')
+  if (token) {
+    router.push('/admin/dashboard')
+  }
+})
 </script>
 
 <style scoped>

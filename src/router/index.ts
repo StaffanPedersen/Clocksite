@@ -1,9 +1,10 @@
-// src/router/index.ts
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '@/views/HomeView.vue'
 import AdminLogin from '@/components/AdminLogin.vue'
 import AdminDashboard from '@/components/AdminDashboard.vue'
 import axios from 'axios'
+import NewBlog from '@/components/NewBlog.vue'
+import EditBlog from '@/components/EditBlog.vue'
 
 const routes = [
   {
@@ -31,6 +32,16 @@ const routes = [
     name: 'admin-dashboard',
     component: AdminDashboard,
     meta: { requiresAuth: true }
+  },
+  {
+    path: '/admin/new-blog',
+    name: 'NewBlog',
+    component: NewBlog
+  },
+  {
+    path: '/admin/edit-blog/:id',
+    name: 'EditBlog',
+    component: EditBlog
   }
 ]
 

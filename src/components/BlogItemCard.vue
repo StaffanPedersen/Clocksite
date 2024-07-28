@@ -22,7 +22,7 @@ const openDetail = () => {
   emit('open-detail', {
     title: props.title,
     image: fullImageUrl.value,
-    text: 'Sample text for the blog item'
+    text: props.text
   })
 }
 </script>
