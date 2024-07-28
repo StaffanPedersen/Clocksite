@@ -5,6 +5,7 @@
       :key="item.id"
       :title="item.title"
       :image="item.image"
+      :text="item.text"
       @open-detail="showDetail"
     />
     <BlogItemDetail

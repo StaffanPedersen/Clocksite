@@ -4,15 +4,14 @@
     <img :src="image" alt="Blog Image" class="blog-image" />
     <h2>{{ title }}</h2>
     <p>{{ text }}</p>
-    <!-- Ensure this line is correctly binding the text prop -->
   </div>
 </template>
 
 <script setup lang="ts">
 const props = defineProps({
   image: String,
-  title: String,
-  text: String // Ensure the text prop is defined here
+  text: String,
+  title: String
 })
 
 const emit = defineEmits(['close'])
@@ -23,6 +22,12 @@ const close = () => {
 </script>
 
 <style scoped>
+p {
+  max-width: 80%;
+  text-align: center;
+  color: white;
+  z-index: 1;
+}
 .blog-item-detail {
   position: fixed;
   top: 0;

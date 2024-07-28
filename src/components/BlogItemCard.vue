@@ -11,7 +11,7 @@ import { computed } from 'vue'
 const props = defineProps({
   title: String,
   image: String,
-  text: String // Ensure the text prop is defined here
+  text: String
 })
 
 const emit = defineEmits(['open-detail'])
@@ -22,9 +22,10 @@ const fullImageUrl = computed(() => `${baseUrl}/${props.image}`)
 const openDetail = () => {
   emit('open-detail', {
     title: props.title,
-    image: fullImageUrl.value,
-    text: props.text // Ensure the text prop is passed here
+    text: props.text,
+    image: fullImageUrl.value
   })
+  console.log(props.text)
 }
 </script>
 
