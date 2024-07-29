@@ -13,7 +13,7 @@ const token = localStorage.getItem('token')
 if (token) {
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
   axios
-    .get('http://91.192.221.9:5000/api/Auth/validate-token')
+    .get('https://91.192.221.9:5000/api/Auth/validate-token')
     .then((response) => {
       // console.log(response.data.message)
       // Token is valid, no need to redirect here

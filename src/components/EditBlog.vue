@@ -94,7 +94,7 @@ const submitBlog = async () => {
 }
 
 const getImageUrl = (imageName) => {
-  return `http://91.192.221.9:5000/images/blog/${imageName}`
+  return `https://91.192.221.9:5000/images/blog/${imageName}`
 }
 
 onMounted(() => {

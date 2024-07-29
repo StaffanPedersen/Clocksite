@@ -16,7 +16,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open-detail'])
 
-const baseUrl = 'http://91.192.221.9:5000/images/blog'
+const baseUrl = 'https://91.192.221.9:5000/images/blog'
 const fullImageUrl = computed(() => `${baseUrl}/${props.image}`)
 
 const openDetail = () => {
