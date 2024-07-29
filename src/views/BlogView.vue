@@ -29,7 +29,7 @@ const selectedItem = ref(null)
 
 onMounted(async () => {
   try {
-    const response = await axios.get('https://localhost:7188/api/Blog')
+    const response = await axios.get('http://91.192.221.9:5000/api/Blog')
     blogItems.value = response.data
   } catch (error) {
     console.error('Error fetching blog data:', error)
