@@ -1,8 +1,9 @@
 import axios from 'axios'
 
 const BlogService = (() => {
-  const blogController = 'https://localhost:7188/api/Blog'
-  const imageUploadController = 'https://localhost:7188/api/imageupload'
+  const localhost = 'http://91.192.221.9:5000'
+  const blogController = 'http://91.192.221.9:5000/api/Blog'
+  const imageUploadController = 'http://91.192.221.9:5000/api/imageupload'
   const localImageUrl = '/images/blog'
 
   const getAll = async () => {
@@ -79,7 +80,7 @@ const BlogService = (() => {
   }
 
   const getImageUrl = (imageName) => {
-    return `${localImageUrl}/${imageName}`
+    return `${localhost}${localImageUrl}/${imageName}`
   }
 
   return {
