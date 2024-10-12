@@ -26,7 +26,7 @@ const password = ref('')
 const error = ref('')
 const router = useRouter()
 
-const  localhost = import.meta.env.VITE_API_URL
+const localhost = import.meta.env.VITE_API_URL
 
 const login = async () => {
   if (!username.value || !password.value) {
