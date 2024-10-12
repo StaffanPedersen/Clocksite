@@ -23,7 +23,7 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import BlogService from '@/services/BlogService'
+import BlogService from '@/services/BlogService.ts'
 
 const title = ref('')
 const text = ref('')
@@ -48,7 +48,7 @@ const submitBlog = async () => {
     }
     const result = await BlogService.postBlog(newBlog)
     if (result) {
-      router.push('/admin/dashboard')
+      await router.push('/admin/dashboard')
     } else {
       error.value = 'Failed to create blog'
     }
@@ -63,6 +63,7 @@ const submitBlog = async () => {
   max-width: 600px;
   margin: auto;
   padding: 1rem;
+  color: white;
 }
 
 .new-blog form div {

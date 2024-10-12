@@ -21,7 +21,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import BlogService from '@/services/BlogService'
+import BlogService from '@/services/BlogService.ts'
 
 const blogs = ref([])
 const router = useRouter()
@@ -61,7 +61,7 @@ const deleteBlog = async (id) => {
 }
 
 const getImageUrl = (imageName) => {
-  return `https://91.192.221.9:5000/images/blog/${imageName}`
+  return BlogService.getFullImageUrl(imageName)
 }
 
 onMounted(() => {
@@ -74,6 +74,12 @@ onMounted(() => {
   max-width: 800px;
   margin: auto;
   padding: 1rem;
+  color: white;
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    text-align: center;
+  }
 }
 
 .blog-item {

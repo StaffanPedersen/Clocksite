@@ -26,6 +26,8 @@ const password = ref('')
 const error = ref('')
 const router = useRouter()
 
+const  localhost = import.meta.env.VITE_API_URL
+
 const login = async () => {
   if (!username.value || !password.value) {
     error.value = 'Username and password are required'
@@ -33,7 +35,7 @@ const login = async () => {
   }
 
   try {
-    const response = await axios.post('https://91.192.221.9:5000/api/Auth/login', {
+    const response = await axios.post(`${localhost}api/Auth/login `, {
       username: username.value,
       password: password.value
     })
@@ -65,6 +67,7 @@ onMounted(() => {
   border: 1px solid #ccc;
   border-radius: 8px;
   text-align: center;
+  color: white;
 }
 
 .login form div {

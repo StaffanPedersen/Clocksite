@@ -20,7 +20,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+import BlogService from '@/services/BlogService.ts'
 import BlogItemCard from '@/components/BlogItemCard.vue'
 import BlogItemDetail from '@/components/BlogItemDetail.vue'
 
@@ -29,8 +29,7 @@ const selectedItem = ref(null)
 
 onMounted(async () => {
   try {
-    const response = await axios.get('https://91.192.221.9:5000/api/Blog')
-    blogItems.value = response.data
+    blogItems.value = await BlogService.getAll()
   } catch (error) {
     console.error('Error fetching blog data:', error)
   }
@@ -57,5 +56,6 @@ const showDetail = (item) => {
   flex-wrap: wrap;
   gap: 1rem;
   justify-content: center;
+  color: white;
 }
 </style>

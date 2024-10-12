@@ -18,6 +18,7 @@ const isAuthenticated = ref(localStorage.getItem('auth') === 'true')
     min-height: 100vh;
     display: flex;
     align-items: center;
+    color: white;
   }
 }
 </style>

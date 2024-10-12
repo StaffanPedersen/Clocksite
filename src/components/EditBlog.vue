@@ -29,7 +29,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import BlogService from '@/services/BlogService'
+import BlogService from '@/services/BlogService.ts'
 
 const title = ref('')
 const text = ref('')
@@ -94,7 +94,7 @@ const submitBlog = async () => {
 }
 
 const getImageUrl = (imageName) => {
-  return `https://91.192.221.9:5000/images/blog/${imageName}`
+  return BlogService.getFullImageUrl(imageName)
 }
 
 onMounted(() => {
@@ -107,6 +107,7 @@ onMounted(() => {
   max-width: 600px;
   margin: auto;
   padding: 1rem;
+  color: white;
 }
 
 .edit-blog form div {

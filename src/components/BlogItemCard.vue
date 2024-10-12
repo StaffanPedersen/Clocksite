@@ -7,6 +7,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import BlogService from '@/services/BlogService.ts'
 
 const props = defineProps({
   title: String,
@@ -16,8 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open-detail'])
 
-const baseUrl = 'https://91.192.221.9:5000/images/blog'
-const fullImageUrl = computed(() => `${baseUrl}/${props.image}`)
+const fullImageUrl = computed(() => BlogService.getFullImageUrl(props.image))
 
 const openDetail = () => {
   emit('open-detail', {
@@ -25,7 +25,6 @@ const openDetail = () => {
     text: props.text,
     image: fullImageUrl.value
   })
-  console.log(props.text)
 }
 </script>
 
@@ -38,6 +37,7 @@ const openDetail = () => {
   text-align: center;
   max-width: 20%;
   cursor: pointer;
+  color: white;
 }
 
 .blog-item img {
