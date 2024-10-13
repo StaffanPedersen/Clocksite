@@ -3,7 +3,6 @@ import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 
-// https://vitejs.dev/config/
 export default defineConfig({
   base: '/',
   plugins: [vue(), vueJsx()],
@@ -15,9 +14,16 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'http://localhost:5000', // Replace this with your backend API
+        target: 'https://127.0.0.1:44332', // Local server URL
         changeOrigin: true,
+        secure: false, // Accept self-signed certificates
         rewrite: (path) => path.replace(/^\/api/, ''),
+      },
+      '/images': {
+        target: 'https://127.0.0.1:44332', // Local server URL for images
+        changeOrigin: true,
+        secure: false, // Accept self-signed certificates
+        rewrite: (path) => path.replace(/^\/images/, ''),
       }
     }
   }
