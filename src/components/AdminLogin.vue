@@ -26,8 +26,7 @@ const password = ref('')
 const error = ref('')
 const router = useRouter()
 
-//const localhost = import.meta.env.VITE_API_URL
-const localhost = 'https://127.0.0.1:44332/'
+const localhost = import.meta.env.VITE_API_URL
 
 const login = async () => {
   if (!username.value || !password.value) {

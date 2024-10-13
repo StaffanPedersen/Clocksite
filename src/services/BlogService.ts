@@ -1,8 +1,7 @@
 import axios from 'axios'
 
 const BlogService = (() => {
-  //const localhost = import.meta.env.VITE_API_URL
-  const localhost = 'https://127.0.0.1:44332/'
+  const localhost = import.meta.env.VITE_API_URL
   const blogController = `${localhost}api/Blog`
   const imageUploadController = `${localhost}api/ImageUpload`
   const localImageUrl = 'images/blog'
