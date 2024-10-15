@@ -35,24 +35,30 @@ const login = async () => {
   }
 
   try {
-    const response = await axios.post(`${localhost}api/Auth/login `, {
+    const response = await axios.post(`${localhost}api/Auth/login`, {
       username: username.value,
       password: password.value
     })
     if (response.data.token) {
-      localStorage.setItem('token', response.data.token)
+      const token = `Bearer ${response.data.token}`
+      localStorage.setItem('auth-token', token)
       await router.push('/admin/dashboard')
     } else {
       error.value = 'No token received'
     }
   } catch (err) {
-    error.value = 'Invalid credentials or server error'
+    console.error('Login error:', err) // Debugging log
+    if (err.response && err.response.status === 401) {
+      error.value = 'Invalid credentials'
+    } else {
+      error.value = 'Server error, please try again later'
+    }
   }
 }
 
 // Redirect to dashboard if token exists
 onMounted(() => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('auth-token')
   if (token) {
     router.push('/admin/dashboard')
   }

@@ -36,12 +36,14 @@ const routes = [
   {
     path: '/admin/new-blog',
     name: 'NewBlog',
-    component: NewBlog
+    component: NewBlog,
+    meta: { requiresAuth: true }
   },
   {
     path: '/admin/edit-blog/:id',
     name: 'EditBlog',
-    component: EditBlog
+    component: EditBlog,
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -51,7 +53,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('token')
+  const token = localStorage.getItem('auth-token') // Consistent token key
   if (to.meta.requiresAuth && !token) {
     next('/admin')
   } else {
@@ -61,7 +63,7 @@ router.beforeEach((to, from, next) => {
 
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token')
+    const token = localStorage.getItem('auth-token') // Consistent token key
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

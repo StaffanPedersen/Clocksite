@@ -8,9 +8,19 @@ const BlogService = (() => {
 
   const getBaseUrl = () => localhost
 
+  const getAuthToken = () => {
+    const token = localStorage.getItem('auth-token')
+    return token
+  }
+
   const getAll = async () => {
     try {
-      const result = await axios.get(blogController)
+      const token = getAuthToken()
+      const result = await axios.get(blogController, {
+        headers: {
+          Authorization: token
+        }
+      })
       return result.data
     } catch (err) {
       if (err instanceof Error) {
@@ -24,7 +34,12 @@ const BlogService = (() => {
 
   const getById = async (id: number) => {
     try {
-      const result = await axios.get(`${blogController}/${id}`)
+      const token = getAuthToken()
+      const result = await axios.get(`${blogController}/${id}`, {
+        headers: {
+          Authorization: token
+        }
+      })
       return result.data
     } catch (err) {
       console.log(`Unable to get blog with id ${id}`)
@@ -34,7 +49,12 @@ const BlogService = (() => {
 
   const getByName = async (name: string) => {
     try {
-      const result = await axios.get(`${blogController}/byName/${name}`)
+      const token = getAuthToken()
+      const result = await axios.get(`${blogController}/byName/${name}`, {
+        headers: {
+          Authorization: token
+        }
+      })
       return result.data
     } catch (err) {
       console.log(`Unable to get blog with name ${name}`)
@@ -44,7 +64,12 @@ const BlogService = (() => {
 
   const putBlog = async (blogToUpdate: { id: number; [key: string]: any }) => {
     try {
-      await axios.put(`${blogController}/${blogToUpdate.id}`, blogToUpdate)
+      const token = getAuthToken()
+      await axios.put(`${blogController}/${blogToUpdate.id}`, blogToUpdate, {
+        headers: {
+          Authorization: token
+        }
+      })
       return true
     } catch (err) {
       console.error('Error updating blog:', err)
@@ -54,7 +79,12 @@ const BlogService = (() => {
 
   const postBlog = async (newBlog: { [key: string]: any }) => {
     try {
-      const result = await axios.post(blogController, newBlog)
+      const token = getAuthToken()
+      const result = await axios.post(blogController, newBlog, {
+        headers: {
+          Authorization: token
+        }
+      })
       return result.data
     } catch (err) {
       console.error('Error posting blog:', err)
@@ -67,8 +97,12 @@ const BlogService = (() => {
     formData.append('formFile', image)
 
     try {
+      const token = getAuthToken()
       await axios.post(imageUploadController, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: token
+        }
       })
     } catch (err) {
       console.error('Error uploading image:', err)
@@ -78,10 +112,15 @@ const BlogService = (() => {
 
   const deleteBlog = async (id: number) => {
     try {
-      await axios.delete(`${blogController}/${id}`)
-      return true
-    } catch (err) {
-      console.error(`Error deleting blog with id ${id}:`, err)
+      const token = getAuthToken()
+      const response = await axios.delete(`${blogController}/${id}`, {
+        headers: {
+          Authorization: token
+        }
+      })
+      return response.status === 204
+    } catch (error) {
+      console.error(`Error deleting blog with id ${id}:`, error)
       return false
     }
   }

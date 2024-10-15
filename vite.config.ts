@@ -10,21 +10,22 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
-  },
-  server: {
-    proxy: {
-      '/api': {
-        target: 'https://127.0.0.1:5001', // Local server URL
-        changeOrigin: true,
-        secure: false, // Accept self-signed certificates
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      },
-      '/images': {
-        target: 'https://127.0.0.1:5001', // Local server URL for images
-        changeOrigin: true,
-        secure: false, // Accept self-signed certificates
-        rewrite: (path) => path.replace(/^\/images/, ''),
-      }
-    }
   }
+  // Comment out or remove the server proxy settings for production
+  // server: {
+  //   proxy: {
+  //     '/api': {
+  //       target: 'https://codeweb.no:5001', // Local server URL
+  //       changeOrigin: true,
+  //       secure: false, // Accept self-signed certificates
+  //       rewrite: (path) => path.replace(/^\/api/, '')
+  //     },
+  //     '/images': {
+  //       target: 'https://codeweb.no:5001', // Local server URL for images
+  //       changeOrigin: true,
+  //       secure: false, // Accept self-signed certificates
+  //       rewrite: (path) => path.replace(/^\/images/, '')
+  //     }
+  //   }
+  // }
 })

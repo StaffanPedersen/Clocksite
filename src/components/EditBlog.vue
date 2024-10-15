@@ -74,7 +74,7 @@ const submitBlog = async () => {
     id: route.params.id,
     title: title.value,
     text: text.value,
-    image: currentImage.value // Ensure the current image name is included
+    image: currentImage.value
   }
 
   try {
