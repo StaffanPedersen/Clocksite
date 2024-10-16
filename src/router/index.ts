@@ -53,7 +53,7 @@ const router = createRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  const token = localStorage.getItem('auth-token') // Consistent token key
+  const token = localStorage.getItem('auth-token')
   if (to.meta.requiresAuth && !token) {
     next('/admin')
   } else {
@@ -63,7 +63,7 @@ router.beforeEach((to, from, next) => {
 
 axios.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('auth-token') // Consistent token key
+    const token = localStorage.getItem('auth-token')
     if (token) {
       config.headers.Authorization = `Bearer ${token}`
     }

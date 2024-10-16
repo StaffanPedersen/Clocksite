@@ -40,14 +40,13 @@ const login = async () => {
       password: password.value
     })
     if (response.data.token) {
-      const token = `Bearer ${response.data.token}`
+      const token = response.data.token
       localStorage.setItem('auth-token', token)
       await router.push('/admin/dashboard')
     } else {
       error.value = 'No token received'
     }
   } catch (err) {
-    console.error('Login error:', err) // Debugging log
     if (err.response && err.response.status === 401) {
       error.value = 'Invalid credentials'
     } else {

@@ -12,13 +12,8 @@
       </div>
       <div>
         <label for="image">Image:</label>
-        <input type="file" @change="onFileChange" ref="fileInput" />
-        <img
-          v-if="currentImage"
-          :src="getImageUrl(currentImage)"
-          alt="Current Blog Image"
-          class="current-image"
-        />
+        <input type="file" @change="onFileChange" />
+        <img v-if="imageUrl" :src="imageUrl" alt="Current Image" class="current-image" />
       </div>
       <button type="submit">Submit</button>
     </form>
@@ -34,72 +29,56 @@ import BlogService from '@/services/BlogService.ts'
 const title = ref('')
 const text = ref('')
 const image = ref(null)
-const currentImage = ref(null)
+const imageUrl = ref('')
 const error = ref('')
-const fileInput = ref(null)
 const router = useRouter()
 const route = useRoute()
+const blogId = route.params.id
 
 const fetchBlog = async () => {
   try {
-    const blog = await BlogService.getById(route.params.id)
-    if (blog) {
-      title.value = blog.title
-      text.value = blog.text
-      currentImage.value = blog.image
-      if (currentImage.value) {
-        const file = new File([], currentImage.value)
-        Object.defineProperty(file, 'name', {
-          writable: true,
-          value: currentImage.value
-        })
-        const dataTransfer = new DataTransfer()
-        dataTransfer.items.add(file)
-        fileInput.value.files = dataTransfer.files
-      }
-    } else {
-      error.value = 'Failed to fetch blog'
-    }
+    const blog = await BlogService.getBlog(blogId)
+    title.value = blog.title
+    text.value = blog.text
+    imageUrl.value = blog.imageUrl
   } catch (err) {
-    error.value = 'Failed to fetch blog'
+    console.error('Error fetching blog:', err)
+    error.value = 'Error fetching blog'
   }
 }
+
+onMounted(fetchBlog)
 
 const onFileChange = (e) => {
   image.value = e.target.files[0]
 }
 
 const submitBlog = async () => {
-  const blogToUpdate = {
-    id: route.params.id,
-    title: title.value,
-    text: text.value,
-    image: currentImage.value
-  }
-
   try {
+    let newImageUrl = imageUrl.value
     if (image.value) {
-      await BlogService.uploadImage(image.value)
-      blogToUpdate.image = image.value.name
+      const response = await BlogService.uploadImage(image.value, text.value)
+      newImageUrl = response.fileName
     }
-    const success = await BlogService.putBlog(blogToUpdate)
-    if (success) {
+
+    const updatedBlog = {
+      id: blogId,
+      title: title.value,
+      text: text.value,
+      image: newImageUrl
+    }
+
+    const result = await BlogService.putBlog(updatedBlog)
+    if (result) {
       router.push('/admin/dashboard')
     } else {
       error.value = 'Failed to update blog'
     }
   } catch (err) {
-    error.value = 'Failed to update blog'
+    console.error('Error submitting blog:', err)
+    error.value = err.message || 'Error submitting blog'
   }
 }
-
-const getImageUrl = (imageName) => {
-  return BlogService.getFullImageUrl(imageName)
-}
-
-onMounted(() => {
-  fetchBlog()
-})
 </script>
 
 <style scoped>

@@ -82,7 +82,6 @@ const getUserInfo = () => {
   }
 }
 
-
 onMounted(() => {
   fetchBlogs()
   getUserInfo()

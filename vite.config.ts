@@ -15,13 +15,13 @@ export default defineConfig({
   // server: {
   //   proxy: {
   //     '/api': {
-  //       target: 'https://codeweb.no:5001', // Local server URL
+  //       target: 'https://127.0.0.1:5001',
   //       changeOrigin: true,
   //       secure: false, // Accept self-signed certificates
   //       rewrite: (path) => path.replace(/^\/api/, '')
   //     },
   //     '/images': {
-  //       target: 'https://codeweb.no:5001', // Local server URL for images
+  //       target: 'https://127.0.0.1:5001',
   //       changeOrigin: true,
   //       secure: false, // Accept self-signed certificates
   //       rewrite: (path) => path.replace(/^\/images/, '')

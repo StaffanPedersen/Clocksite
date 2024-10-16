@@ -28,15 +28,15 @@ const close = () => {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.9); /* Darker background */
+  background: rgba(0, 0, 0, 0.9);
   color: white;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align content at the top */
+  justify-content: flex-start;
   padding: 2rem;
   box-sizing: border-box;
-  overflow: auto; /* Enable scrolling */
+  overflow: auto;
 }
 
 .blog-image {
@@ -47,15 +47,15 @@ const close = () => {
 }
 
 .close-button {
-  position: fixed; /* Change to fixed */
+  position: fixed;
   top: 1rem;
-  right: 2rem; /* Move a little more to the left */
-  background: white; /* White circle background */
+  right: 2rem;
+  background: white;
   border: none;
-  color: black; /* Change text color to black for contrast */
+  color: black;
   font-size: 1.5rem;
   cursor: pointer;
-  border-radius: 50%; /* Make it a circle */
+  border-radius: 50%;
   width: 2rem;
   height: 2rem;
   display: flex;

@@ -36,24 +36,28 @@ const onFileChange = (e) => {
 }
 
 const submitBlog = async () => {
-  const newBlog = {
-    title: title.value,
-    text: text.value
-  }
-
   try {
+    let imageUrl = ''
     if (image.value) {
-      await BlogService.uploadImage(image.value)
-      newBlog.image = image.value.name
+      const response = await BlogService.uploadImage(image.value, text.value)
+      imageUrl = response.fileName
     }
+
+    const newBlog = {
+      title: title.value,
+      text: text.value,
+      image: imageUrl
+    }
+
     const result = await BlogService.postBlog(newBlog)
     if (result) {
-      await router.push('/admin/dashboard')
+      router.push('/admin/dashboard')
     } else {
-      error.value = 'Failed to create blog'
+      error.value = 'Failed to post blog'
     }
   } catch (err) {
-    error.value = 'Failed to create blog'
+    console.error('Error submitting blog:', err)
+    error.value = 'Error submitting blog'
   }
 }
 </script>

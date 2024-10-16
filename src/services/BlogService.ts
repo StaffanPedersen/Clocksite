@@ -1,5 +1,12 @@
 import axios from 'axios'
 
+interface Blog {
+  title: string
+  content: string
+  author: string
+  imageUrl?: string
+}
+
 const BlogService = (() => {
   const localhost = import.meta.env.VITE_API_URL
   const blogController = `${localhost}api/Blog`
@@ -18,15 +25,15 @@ const BlogService = (() => {
       const token = getAuthToken()
       const result = await axios.get(blogController, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return result.data
     } catch (err) {
       if (err instanceof Error) {
-        console.error('Unable to contact blogController:', err.message)
+        console.error('Unable to contact service:', err.message)
       } else {
-        console.error('Unable to contact blogController:', err)
+        console.error('Unable to contact service:', err)
       }
       return null
     }
@@ -37,7 +44,7 @@ const BlogService = (() => {
       const token = getAuthToken()
       const result = await axios.get(`${blogController}/${id}`, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return result.data
@@ -52,12 +59,12 @@ const BlogService = (() => {
       const token = getAuthToken()
       const result = await axios.get(`${blogController}/byName/${name}`, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return result.data
     } catch (err) {
-      console.log(`Unable to get blog with name ${name}`)
+      console.log(`Unable to get blog with this name ${name}`)
       return null
     }
   }
@@ -65,9 +72,9 @@ const BlogService = (() => {
   const putBlog = async (blogToUpdate: { id: number; [key: string]: any }) => {
     try {
       const token = getAuthToken()
-      await axios.put(`${blogController}/${blogToUpdate.id}`, blogToUpdate, {
+      const response = await axios.put(`${blogController}/${blogToUpdate.id}`, blogToUpdate, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return true
@@ -77,12 +84,12 @@ const BlogService = (() => {
     }
   }
 
-  const postBlog = async (newBlog: { [key: string]: any }) => {
+  const postBlog = async (newBlog: Blog) => {
     try {
       const token = getAuthToken()
       const result = await axios.post(blogController, newBlog, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return result.data
@@ -92,20 +99,27 @@ const BlogService = (() => {
     }
   }
 
-  const uploadImage = async (image: File) => {
+  const uploadImage = async (image: File, description: string) => {
     const formData = new FormData()
-    formData.append('formFile', image)
+    formData.append('file', image)
+    formData.append('description', description)
+    formData.append('clientDate', new Date().toISOString())
 
     try {
       const token = getAuthToken()
-      await axios.post(imageUploadController, formData, {
+      const response = await axios.post(imageUploadController, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
+      return response.data
     } catch (err) {
-      console.error('Error uploading image:', err)
+      if (axios.isAxiosError(err)) {
+        console.error('Error uploading image:', err.response ? err.response.data : err.message)
+      } else {
+        console.error('Error uploading image:', err)
+      }
       throw err
     }
   }
@@ -115,7 +129,7 @@ const BlogService = (() => {
       const token = getAuthToken()
       const response = await axios.delete(`${blogController}/${id}`, {
         headers: {
-          Authorization: token
+          Authorization: `Bearer ${token}`
         }
       })
       return response.status === 204
@@ -129,8 +143,19 @@ const BlogService = (() => {
     return `${localhost}${localImageUrl}/${imageName}`
   }
 
-  const getFullImageUrl = (imageName: string) => {
-    return `${localhost}${localImageUrl}/${imageName}`
+  const getBlog = async (id: number) => {
+    try {
+      const token = getAuthToken()
+      const response = await axios.get(`${blogController}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      })
+      return response.data
+    } catch (err) {
+      console.error('Error fetching blog:', err)
+      throw err
+    }
   }
 
   return {
@@ -139,10 +164,10 @@ const BlogService = (() => {
     putBlog,
     getById,
     getByName,
+    getBlog,
     deleteBlog,
     uploadImage,
     getImageUrl,
-    getFullImageUrl,
     getBaseUrl
   }
 })()

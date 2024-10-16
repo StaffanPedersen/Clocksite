@@ -17,7 +17,7 @@ const props = defineProps({
 
 const emit = defineEmits(['open-detail'])
 
-const fullImageUrl = computed(() => BlogService.getFullImageUrl(props.image))
+const fullImageUrl = computed(() => BlogService.getImageUrl(props.image))
 
 const openDetail = () => {
   emit('open-detail', {
