@@ -4,6 +4,7 @@
     <p>Logged in as: {{ username }}</p>
     <p>Roles: {{ roles.join(', ') }}</p>
     <button v-if="isAdminOrEditor" @click="createNewBlog">Create New Blog</button>
+    <button @click="logout" class="logout-button">Logout</button>
     <div v-for="blog in blogs" :key="blog.id" class="blog-item">
       <h2>
         {{ blog.title }}
@@ -82,6 +83,11 @@ const getUserInfo = () => {
   }
 }
 
+const logout = () => {
+  localStorage.removeItem('auth-token')
+  router.push('/admin')
+}
+
 onMounted(() => {
   fetchBlogs()
   getUserInfo()
@@ -118,5 +124,19 @@ onMounted(() => {
 
 .admin-dashboard button {
   margin-right: 1rem;
+}
+
+.logout-button {
+  background-color: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+.logout-button:hover {
+  background-color: #d32f2f;
 }
 </style>
