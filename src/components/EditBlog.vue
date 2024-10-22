@@ -2,6 +2,12 @@
   <div class="edit-blog">
     <h1>Edit Blog</h1>
     <form @submit.prevent="submitBlog">
+      <img
+        v-if="currentImage"
+        :src="getImageUrl(currentImage)"
+        alt="Current Blog Image"
+        class="current-image"
+      />
       <div>
         <label for="title">Title:</label>
         <input type="text" v-model="title" required />
@@ -12,8 +18,7 @@
       </div>
       <div>
         <label for="image">Image:</label>
-        <input type="file" @change="onFileChange" />
-        <img v-if="imageUrl" :src="imageUrl" alt="Current Image" class="current-image" />
+        <input type="file" @change="onFileChange" ref="fileInput" />
       </div>
       <button type="submit">Submit</button>
     </form>
@@ -24,26 +29,45 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import BlogService from '@/services/BlogService.ts'
-
+import BlogService from '@/services/BlogService'
 const title = ref('')
 const text = ref('')
 const image = ref(null)
-const imageUrl = ref('')
+
+const currentImage = ref(null)
 const error = ref('')
+const imageUrl = ref('')
+const fileInput = ref(null)
 const router = useRouter()
 const route = useRoute()
 const blogId = route.params.id
 
+const getImageUrl = (image) => {
+  return BlogService.getImageUrl(image)
+}
+
 const fetchBlog = async () => {
   try {
-    const blog = await BlogService.getBlog(blogId)
-    title.value = blog.title
-    text.value = blog.text
-    imageUrl.value = blog.imageUrl
+    const blog = await BlogService.getById(route.params.id)
+    if (blog) {
+      title.value = blog.title
+      text.value = blog.text
+      currentImage.value = blog.image
+      if (currentImage.value) {
+        const file = new File([], currentImage.value)
+        Object.defineProperty(file, 'name', {
+          writable: true,
+          value: currentImage.value
+        })
+        const dataTransfer = new DataTransfer()
+        dataTransfer.items.add(file)
+        fileInput.value.files = dataTransfer.files
+      }
+    } else {
+      error.value = 'Failed to fetch blog'
+    }
   } catch (err) {
-    console.error('Error fetching blog:', err)
-    error.value = 'Error fetching blog'
+    error.value = 'Failed to fetch blog'
   }
 }
 
@@ -51,11 +75,14 @@ onMounted(fetchBlog)
 
 const onFileChange = (e) => {
   image.value = e.target.files[0]
+  if (image.value) {
+    imageUrl.value = URL.createObjectURL(image.value)
+  }
 }
 
 const submitBlog = async () => {
   try {
-    let newImageUrl = imageUrl.value
+    let newImageUrl = currentImage.value
     if (image.value) {
       const response = await BlogService.uploadImage(image.value, text.value)
       newImageUrl = response.fileName
